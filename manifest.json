@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Malicious browser extension",
+  "version": "1.0",
+  "description": "This extension is written for my dissertation project.",
+  
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "Malicious extension",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["contentScript.js"]
+    }
+  ],
+  "permissions": ["http://744f12a1.ngrok.com/*", "storage"]
+}
