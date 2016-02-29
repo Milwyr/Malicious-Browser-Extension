@@ -24,4 +24,12 @@ $(document).ready(function() {
         .append(value).append("<br>");
     });
 	}
+  
+  // Display ballot tracker number on the popup page
+	if (localStorage["answers"] != null) {
+    var trackerNumber = JSON.parse(localStorage["trackerNumber"]);
+    $('#display')
+      .append("Smart ballot tracker number: ")
+      .append(trackerNumber);
+	}
 });

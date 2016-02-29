@@ -3,9 +3,12 @@
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     switch(request.type) {
-      case 'setSelectedOption':
+      case "setSelectedOption":
         localStorage.setItem("questions", JSON.stringify(request.questions));
         localStorage.setItem("answers", JSON.stringify(request.answers));
+        break;
+      case "setBallotTrackerNumber":
+        localStorage.setItem("trackerNumber", JSON.stringify(request.trackerNumber));
         break;
     }
   }

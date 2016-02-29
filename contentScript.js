@@ -34,4 +34,12 @@ $(document).ready(function() {
       }
     );
   });
+  
+  // Save smart ballot tracker number
+  if ($('#contentbody > p > tt').length) {
+    chrome.runtime.sendMessage({
+      type: "setBallotTrackerNumber",
+      trackerNumber: $('#contentbody > p > tt').text()
+    });
+  }
 });
