@@ -3,15 +3,10 @@
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     switch(request.type) {
-		case 'setSelectedOption':
-			localStorage.setItem(
-        "question".concat(request.questionNumber),
-        JSON.stringify(request.question));
-        
-        localStorage.setItem(
-          "answer".concat(request.questionNumber),
-          JSON.stringify(request.answer));
-			break;
+      case 'setSelectedOption':
+        localStorage.setItem("questions", JSON.stringify(request.questions));
+        localStorage.setItem("answers", JSON.stringify(request.answers));
+        break;
     }
   }
 );

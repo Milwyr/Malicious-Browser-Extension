@@ -1,29 +1,37 @@
 // Author: Milton Li 2015-2016, Newcastle University
 // Project: Attack on Helios voting system
 
-var userId;
-
-// Text of option on the selected check box
-var selectedAnswer;
+var questions = [];
+var answers = []
 
 $(document).ready(function() {
-});
-
-// Add click listner to all the option check boxes
-$(document).on('click', '.ballot_answer', function() {
-	// Retrieve the option selected by the user
-	var selectedCheckBox = $("#" + this.id);
-	selectedAnswer = selectedCheckBox[0].nextSibling.nodeValue;
-});
-
-// Add click listener to the 'Next' button
-$(document).on('click', ':button[value="Next"]', function() {
-	// Send the question and answer message to store in local storage
-	chrome.runtime.sendMessage(
-	{
-		type: "setSelectedOption",
-		questionNumber: $("input[name='question_num']").val(),
-		question: $('#answer_form > p > b').text(), 
-		answer: selectedAnswer
-	});
+  
+  // Save the first question when the user clicks the start button
+  $(document).on("click", ':button:contains("Start")', function() {
+    questions[0] = $("#answer_form > p > b").text();
+  });
+  
+  // Save the answer selected by the user on the check box
+  $(document).on('click', '.ballot_answer', function() {
+    var index = $("input[name='question_num']").val();
+    var answer = $("#" + this.id)[0].nextSibling.nodeValue;
+    answers[index] = answer;
+  });
+  
+  // Save the questions from question two when the user clicks the next button
+  $(document).on('click', ':button[value="Next"]', function() {
+    var index = $("input[name='question_num']").val();
+    questions[index] = $('#answer_form > p > b').text();
+  });
+  
+  // Save all the questions and answers when the user clicks the proceed button
+  $(document).on('click', ':button[value="Proceed"]', function() {
+    chrome.runtime.sendMessage(
+      {
+        type: "setSelectedOption",
+        questions: questions,
+        answers: answers
+      }
+    );
+  });
 });

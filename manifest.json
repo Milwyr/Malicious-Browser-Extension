@@ -15,7 +15,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://744f12a1.ngrok.com/*"],
+      "matches": ["http://744f12a1.ngrok.com/booth/*"],
       "js": ["jquery-2.2.1.min.js", "contentScript.js"]
     }
   ]
