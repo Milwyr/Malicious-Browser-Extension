@@ -2,6 +2,14 @@
 // Project: Attack on Helios voting system
 $(document).ready(function() {
   
+  if (localStorage["emailAddress"] != null) {
+    var emailAddress = JSON.parse(localStorage["emailAddress"]);
+    $('#display')
+      .append("Email Address: ")
+      .append(emailAddress)
+      .append("<br>");
+  }
+  
   // Display answers on the popup page
 	if (localStorage["questions"] != null) {
     var questions = JSON.parse(localStorage["questions"]);
@@ -26,10 +34,15 @@ $(document).ready(function() {
 	}
   
   // Display ballot tracker number on the popup page
-	if (localStorage["answers"] != null) {
+	if (localStorage["trackerNumber"] != null) {
     var trackerNumber = JSON.parse(localStorage["trackerNumber"]);
     $('#display')
       .append("Smart ballot tracker number: ")
       .append(trackerNumber);
 	}
+  
+  // Clear local storage, i.e. initialise the popup page to the original state
+  $(document).on("click", ":button#clear", function() {
+    localStorage.clear();
+  });
 });

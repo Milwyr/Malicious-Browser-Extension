@@ -15,7 +15,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://744f12a1.ngrok.com/booth/*", "http://744f12a1.ngrok.com/helios/elections/*/cast_confirm", "http://744f12a1.ngrok.com/helios/elections/*/cast_done"],
+      "matches": ["http://744f12a1.ngrok.com/*"],
       "js": ["jquery-2.2.1.min.js", "contentScript.js"]
     }
   ]
