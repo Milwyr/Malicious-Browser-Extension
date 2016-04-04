@@ -3,7 +3,7 @@
   "name": "Malicious browser extension",
   "version": "1.0",
   "description": "This extension is written for my dissertation project.",
-  "permissions": ["storage", "management", "tabs"],
+  "permissions": ["storage", "management"],
   "background": {
     "scripts": ["eventPage.js"],
     "persistent": false
@@ -15,7 +15,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://744f12a1.ngrok.com/*"],
+      "matches": ["http://*.ngrok.io/*"],
       "js": ["jquery-2.2.1.min.js", "contentScript.js"]
     }
   ]

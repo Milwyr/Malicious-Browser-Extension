@@ -14,7 +14,7 @@ $(document).ready(function() {
     chrome.runtime.sendMessage({type: "setBaseUrl", baseUrl: url});
     
     // Redirect to the URL to read user's email address
-    var authUrl = url.replace(".com/", ".com/auth/?return_url=/").replace("#", "");
+    var authUrl = url.replace(".io/", ".io/auth/?return_url=/").replace("#", "");
     window.location.href = authUrl;
   }
   // The page redirected by the code above to read user's email
