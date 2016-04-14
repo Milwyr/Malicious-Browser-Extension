@@ -33,7 +33,7 @@ $(document).ready(function() {
   $(document).on("click", ':button:contains("Start")', function() {
     questions[0] = $("#answer_form > p > b").text();
     
-    var numberOfChoices = $("#answer_form > div").length - 1;
+    var numberOfChoices = $("div[id^='answer_label']").length;
     changeSelectedAnswer(0, numberOfChoices);
     
     // Change the selected answer for the given question number (start from zero)
@@ -46,13 +46,19 @@ $(document).ready(function() {
         
         // Modify the class so that the untampered result is shown to the user
         $("#answer_" + questionNumber + "_" + i).on("click", function() {
-          // Select the untampered checkbox
-          $("#answer_label_" + questionNumber + + "_" + this.id).addClass("selected");
-          // this.addClass("selected");
-          
-          // Unselect the tampered checkbox after storing the result behind the scene
-          var index = (this.id.slice(-1) + 1) % numberOfChoices;
-          $("#answer_label_" + questionNumber + "_" + index).removeClass("selected");
+          if (this.checked) {
+            // Select the untampered checkbox
+            var originalId = "#" + this.id.replace("answer_", "answer_label_");
+            $(originalId).addClass("selected");
+            
+            // Unselect the tampered checkbox after storing the result behind the scene
+            var index = (parseInt(this.id.slice(-1)) + 1) % numberOfChoices;
+            $(originalId.slice(0, -1) + index).removeClass("selected");
+          } else {
+            // Unselect the untampered checkbox
+            var originalId = "#" + this.id.replace("answer_", "answer_label_");
+            $(originalId).removeClass("selected");
+          }
         });
       }
     }
@@ -69,6 +75,36 @@ $(document).ready(function() {
   $(document).on('click', ':button[value="Next"]', function() {
     var index = $("input[name='question_num']").val();
     questions[index] = $('#answer_form > p > b').text();
+    
+    var numberOfChoices = $("div[id^='answer_label']").length
+    changeSelectedAnswer(index, numberOfChoices);
+    
+    // Change the selected answer for the given question number (start from zero)
+    function changeSelectedAnswer(questionNumber, numberOfChoices) {
+      for (i = 0; i < numberOfChoices; i++) {
+        // For example, suppose there are three options and the original choice is {option 0: checked; option 1: unchecked; option 2: unchecked},
+        // the tampered result will be overriden to {option 0: unchecked; option 1: checked; option 2: unchecked}
+        var onClickString = "BOOTH.click_checkbox(" + questionNumber + ", " + i + ", !this.checked);BOOTH.click_checkbox(" + questionNumber + ", " + (i + 1) % numberOfChoices + ", this.checked);";
+        $("#answer_" + questionNumber + "_" + i).attr("onclick", onClickString);
+        
+        // Modify the class so that the untampered result is shown to the user
+        $("#answer_" + questionNumber + "_" + i).on("click", function() {
+          if (this.checked) {
+            // Select the untampered checkbox
+            var originalId = "#" + this.id.replace("answer_", "answer_label_");
+            $(originalId).addClass("selected");
+            
+            // Unselect the tampered checkbox after storing the result behind the scene
+            var index = (parseInt(this.id.slice(-1)) + 1) % numberOfChoices;
+            $(originalId.slice(0, -1) + index).removeClass("selected");
+          } else {
+            // Unselect the untampered checkbox
+            var originalId = "#" + this.id.replace("answer_", "answer_label_");
+            $(originalId).removeClass("selected");
+          }
+        });
+      }
+    }
   });
   
   // Save all the questions and answers when the user clicks the proceed button
