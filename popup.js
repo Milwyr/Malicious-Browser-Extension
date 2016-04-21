@@ -10,7 +10,7 @@ $(document).ready(function() {
       .append("<br>");
   }
   
-  // Display answers on the popup page
+  // Display questions on the popup page
 	if (localStorage["questions"] != null) {
     var questions = JSON.parse(localStorage["questions"]);
     
@@ -23,11 +23,22 @@ $(document).ready(function() {
 	}
   
   // Display answers on the popup page
-	if (localStorage["answers"] != null) {
-    var answers = JSON.parse(localStorage["answers"]);
+	if (localStorage["originalAnswers"] != null) {
+    var originalAnswers = JSON.parse(localStorage["originalAnswers"]);
     
-		$.each(answers, function(index, value) {
-      $('#display').append("Answer ")
+		$.each(originalAnswers, function(index, value) {
+      $('#display').append("Original Answer ")
+        .append(index + 1).append(": ")
+        .append(value).append("<br>");
+    });
+	}
+  
+  // Display tampered answers on the popup page
+	if (localStorage["tamperedAnswers"] != null) {
+    var tamperedAnswers = JSON.parse(localStorage["tamperedAnswers"]);
+    
+		$.each(tamperedAnswers, function(index, value) {
+      $('#display').append("Tampered Answer ")
         .append(index + 1).append(": ")
         .append(value).append("<br>");
     });

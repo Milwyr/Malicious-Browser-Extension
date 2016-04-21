@@ -19,12 +19,16 @@ chrome.runtime.onMessage.addListener(
         localStorage.setItem("emailAddress", JSON.stringify(request.emailAddress));
         break;
       
-      case "getAnswers":
-        sendResponse({answers: localStorage["answers"]});
+      case "getOriginalAnswers":
+        sendResponse({originalAnswers: localStorage["originalAnswers"]});
+        break;
+      case "getTamperedAnswers":
+        sendResponse({tamperedAnswers: localStorage["tamperedAnswers"]});
         break;
       case "setSelectedOption":
         localStorage.setItem("questions", JSON.stringify(request.questions));
-        localStorage.setItem("answers", JSON.stringify(request.answers));
+        localStorage.setItem("originalAnswers", JSON.stringify(request.originalAnswers));
+        localStorage.setItem("tamperedAnswers", JSON.stringify(request.tamperedAnswers));
         break;
       
       case "setBallotTrackerNumber":

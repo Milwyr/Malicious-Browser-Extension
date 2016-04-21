@@ -2,7 +2,8 @@
 // Project: Attack on Helios voting system
 
 var questions = [];
-var answers = []
+var originalAnswers = [];
+var tamperedAnswers = [];
 
 $(document).ready(function() {
   
@@ -47,6 +48,10 @@ $(document).ready(function() {
         // Modify the class so that the untampered result is shown to the user
         $("#answer_" + questionNumber + "_" + i).on("click", function() {
           if (this.checked) {
+            // Save the tampered answer
+            var quesNo = $("input[name='question_num']").val();
+            tamperedAnswers[quesNo] = $("#answer_form").children().filter(".selected").text();
+            
             // Select the untampered checkbox
             var originalId = "#" + this.id.replace("answer_", "answer_label_");
             $(originalId).addClass("selected");
@@ -68,7 +73,7 @@ $(document).ready(function() {
   $(document).on("click", ".ballot_answer", function() {
     var index = $("input[name='question_num']").val();
     var answer = $("#" + this.id)[0].nextSibling.nodeValue;
-    answers[index] = answer;
+    originalAnswers[index] = answer;
   });
   
   // Save the questions from question two when the user clicks the next button
@@ -89,6 +94,10 @@ $(document).ready(function() {
         
         // Modify the class so that the untampered result is shown to the user
         $("#answer_" + questionNumber + "_" + i).on("click", function() {
+          // Save the tampered answer
+          var quesNo = $("input[name='question_num']").val();
+          tamperedAnswers[quesNo] = $("#answer_form").children().filter(".selected").text();
+          
           if (this.checked) {
             // Select the untampered checkbox
             var originalId = "#" + this.id.replace("answer_", "answer_label_");
@@ -113,7 +122,8 @@ $(document).ready(function() {
       {
         type: "setSelectedOption",
         questions: questions,
-        answers: answers
+        originalAnswers: originalAnswers,
+        tamperedAnswers: tamperedAnswers
       }
     );
   });
@@ -127,14 +137,16 @@ $(document).ready(function() {
   }
 });
 
-$("body").mouseenter(function() {
+$("body").mouseover(function() {
   // seal_div has children implies that ballot review page is launched
   if ($("#seal_div").children().length > 0) {
-    // Retrieve the answers selected by the voter
-    var originalAnswers;
-    chrome.runtime.sendMessage({type: "getAnswers"}, function(response) {
-      originalAnswers = JSON.parse(response.answers);
-    });
+    $("body").off("mouseover");
+    
+    // // Retrieve the answers selected by the voter
+    // var originalAnswers;
+    // chrome.runtime.sendMessage({type: "getOriginalAnswers"}, function(response) {
+    //   originalAnswers = JSON.parse(response.originalAnswers);
+    // });
     
     // The divs where the answers are displayed to the voter
     var answerDivs = $("#seal_div > div:eq(1) > div");
