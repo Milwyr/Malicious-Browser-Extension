@@ -126,3 +126,22 @@ $(document).ready(function() {
     });
   }
 });
+
+$("body").mouseenter(function() {
+  // seal_div has children implies that ballot review page is launched
+  if ($("#seal_div").children().length > 0) {
+    // Retrieve the answers selected by the voter
+    var originalAnswers;
+    chrome.runtime.sendMessage({type: "getAnswers"}, function(response) {
+      originalAnswers = JSON.parse(response.answers);
+    });
+    
+    // The divs where the answers are displayed to the voter
+    var answerDivs = $("#seal_div > div:eq(1) > div");
+    
+    // Change the answers for each question
+    for (var index = 0; index < answerDivs.length; index++) {
+      answerDivs[index].innerHTML = "✓ " + originalAnswers[index];
+    }
+  }
+});
